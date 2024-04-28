@@ -52,26 +52,28 @@ async function loadModel() {
             console.log('Predicted Number:', predictedNumber);
         }
 
-        // Function to preprocess the image data
         function preprocess(imageData) {
             // Convert the image data to a tensor
             const tensor = tf.browser.fromPixels(imageData);
             // Convert the tensor to grayscale
             const grayscale = tensor.mean(2);
+            // Add an extra dimension to the grayscale tensor
+            const expanded = grayscale.expandDims(2);
             // Resize the grayscale image to match the input shape of the model
-            const resized = tf.image.resizeBilinear(grayscale, [28, 28]);
-            // Expand the dimensions of the resized image to match the input shape of the model
-            const expanded = resized.expandDims(2);
+            const resized = tf.image.resizeBilinear(expanded, [28, 28]);
             // Return the preprocessed data
-            return expanded;
+            return resized;
         }
 
-        // Call the predict function when a key is pressed
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
-                predict();
-            }
+        // Add an event listener to the predict button
+        const predictButton = document.getElementById('predict-button');
+        predictButton.addEventListener('click', predict);
+
+        const clearButton = document.getElementById('clear-button');
+        clearButton.addEventListener('click', function() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
         });
+        
     }
 
     catch (err) {
