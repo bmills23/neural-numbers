@@ -1,6 +1,6 @@
 async function loadModel() {
     try {
-        const model = await tf.loadLayersModel('localstorage://model');
+        const model = await tf.loadLayersModel('./model/model.json');
         console.log('Model loaded successfully!');
 
         // Get the canvas element
