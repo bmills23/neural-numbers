@@ -9,21 +9,37 @@ async function loadModel() {
         // Get the 2D rendering context
         const ctx = canvas.getContext('2d');
 
-        // Add an event listener to the canvas for mouse movement
+        // Add an event listener to the canvas for mouse/mobile movement
         let isDrawing = false;
-        canvas.addEventListener('mousedown', function(event) {
-            isDrawing = true;
-            draw(event);
-        });
-        canvas.addEventListener('mousemove', function(event) {
-            if (isDrawing) {
-                draw(event);
-            }
-        });
-        canvas.addEventListener('mouseup', function() {
-            isDrawing = false;
-        });
 
+        if (navigator.userAgent.indexOf('Mobile') == false) {
+            canvas.addEventListener('touchstart', function(event) {
+                isDrawing = true;
+                draw(event);
+            });
+            canvas.addEventListener('touchmove', function(event) {
+                if (isDrawing) {
+                    draw(event);
+                }
+            });
+            canvas.addEventListener('touchend', function() {
+                isDrawing = false;
+            });
+        } else {
+            canvas.addEventListener('mousedown', function(event) {
+                isDrawing = true;
+                draw(event);
+            });
+            canvas.addEventListener('mousemove', function(event) {
+                if (isDrawing) {
+                    draw(event);
+                }
+            });
+            canvas.addEventListener('mouseup', function() {
+                isDrawing = false;
+            });
+        }
+    
         // Function to draw on the canvas
         function draw(event) {
             // Get the mouse coordinates
@@ -49,7 +65,7 @@ async function loadModel() {
             const prediction = model.predict(normalizedData);
             // Get the predicted number
             const predictedNumber = tf.argMax(prediction, axis=1).dataSync()[0];
-            console.log('Predicted Number:', predictedNumber);
+            console.log(imageData,  reshapedData, normalizedData, prediction, predictedNumber);
         }
 
         function preprocess(imageData) {
