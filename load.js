@@ -1,6 +1,7 @@
 async function loadModel() {
     try {
         const model = await tf.loadLayersModel('./model/model.json');
+        model.predict(tf.zeros([1, 28, 28, 1])).print();
         console.log('Model loaded successfully!');
 
         // Get the canvas element
@@ -57,6 +58,8 @@ async function loadModel() {
             // Preprocess the image data
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             const preprocessedData = preprocess(imageData);
+
+            console.log(preprocessedData);
             // Reshape the data to match the input shape of the model
             const reshapedData = tf.reshape(preprocessedData, [1, 28, 28, 1]);
             // Normalize the data
@@ -66,7 +69,7 @@ async function loadModel() {
             prediction.print();
             // Get the predicted number
             const predictedNumber = tf.argMax(prediction, axis=1).dataSync()[0];
-            console.log(imageData,  reshapedData, normalizedData, prediction, predictedNumber);
+            console.log(imageData, reshapedData, normalizedData, prediction, predictedNumber);
         }
 
         function preprocess(imageData) {
