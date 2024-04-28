@@ -57,8 +57,8 @@ async function loadModel() {
         async function predict() {
             // Preprocess the image data
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const preprocessedData = preprocess(imageData.data);
-            console.log(preprocessedData);
+            const preprocessedData = preprocess(imageData);
+   
             // Reshape the data to match the input shape of the model
             const reshapedData = tf.reshape(preprocessedData, [1, 28, 28, 1]);
             // Normalize the data
