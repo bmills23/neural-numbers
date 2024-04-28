@@ -85,7 +85,7 @@ async function train(model, data) {
     const fitCallbacks = tfvis.show.fitCallbacks(container, metrics);
 
     const BATCH_SIZE = 512;
-    const TRAIN_DATA_SIZE = 25000;
+    const TRAIN_DATA_SIZE = 5000;
     const TEST_DATA_SIZE = 1000;
 
     const [trainXs, trainYs] = tf.tidy(() => {

@@ -63,6 +63,7 @@ async function loadModel() {
             const normalizedData = reshapedData.div(255);
             // Make the prediction
             const prediction = model.predict(normalizedData);
+            prediction.print();
             // Get the predicted number
             const predictedNumber = tf.argMax(prediction, axis=1).dataSync()[0];
             console.log(imageData,  reshapedData, normalizedData, prediction, predictedNumber);
