@@ -1,7 +1,7 @@
 async function loadModel() {
     try {
         const model = await tf.loadLayersModel('./model/model.json');
-        model.predict(tf.zeros([1, 28, 28, 1])).print();
+
         console.log('Model loaded successfully!');
 
         // Get the canvas element
@@ -58,7 +58,6 @@ async function loadModel() {
             // Preprocess the image data
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             const preprocessedData = preprocess(imageData);
-
             console.log(preprocessedData);
             // Reshape the data to match the input shape of the model
             const reshapedData = tf.reshape(preprocessedData, [1, 28, 28, 1]);
@@ -75,12 +74,16 @@ async function loadModel() {
         function preprocess(imageData) {
             // Convert the image data to a tensor
             const tensor = tf.browser.fromPixels(imageData);
+            console.log(tensor);
             // Convert the tensor to grayscale
             const grayscale = tensor.mean(2);
+            console.log(grayscale);
             // Add an extra dimension to the grayscale tensor
             const expanded = grayscale.expandDims(2);
+            console.log(expanded);
             // Resize the grayscale image to match the input shape of the model
             const resized = tf.image.resizeBilinear(expanded, [28, 28]);
+            console.log(resized);
             // Return the preprocessed data
             return resized;
         }
