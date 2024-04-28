@@ -82,8 +82,15 @@ async function loadModel() {
             const expanded = grayscale.expandDims(2);
             console.log(expanded);
             // Resize the grayscale image to match the input shape of the model
-            const resized = tf.image.resizeBilinear(expanded, [28, 28]);
-            console.log(resized);
+            let resized = tf.image.resizeBilinear(expanded, [28, 28]).toFloat();
+
+            resized  = img.mean (2)
+                    .toFloat ()
+                    .expandDims (0)
+                    .expandDims (-1);
+            resized = resized.div (tf.scalar (255.0));
+            resized = tf.scalar (1.0).sub (resized);
+
             // Return the preprocessed data
             return resized;
         }
